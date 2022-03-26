@@ -5,8 +5,8 @@ USER root
 # Install Xvfb, JavaFX-helpers and Openbox window manager
 RUN add-apt-repository ppa:no1wantdthisname/ppa && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq language-pack-zh-hans-base xvfb x11vnc xterm megatools \
-    fonts-droid-fallback fonts-wqy-microhei fluxbox blackbox firefox firefox-locale-zh-hans firefox-geckodriver lxterminal \
-    pcmanfm mousepad dbus-x11 vim-nox aria2 python3-pip python3-dev python3-websockify python3-selenium openjfx libopenjfx-java \
+    fonts-droid-fallback fonts-wqy-microhei fluxbox firefox firefox-locale-zh-hans lxterminal \
+    pcmanfm mousepad dbus-x11 vim-nox aria2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' >/etc/timezone
@@ -39,41 +39,13 @@ RUN  curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/mai
  && chmod +x /usr/bin/start-vnc-session.sh \
  && sed -ri "s/launch.sh/novnc_proxy/g" /usr/bin/start-vnc-session.sh \
  && sed -ri "s/1920x1080/1366x830/g" /usr/bin/start-vnc-session.sh \
- && sed -ri "s/Bitstream Vera Sans-9/WenQuanYi Micro Hei Mono-10/g" /usr/share/blackbox/styles/Gray \
- && sed -ri "s/Bitstream Vera Sans-9/WenQuanYi Micro Hei Mono-10/g" /usr/share/blackbox/styles/Green \
- && sed -ri "s/Bitstream Vera Sans-9/WenQuanYi Micro Hei Mono-10/g" /usr/share/blackbox/styles/Blue \
- && sed -ri "s/Bitstream Vera Sans-9/WenQuanYi Micro Hei Mono-10/g" /usr/share/blackbox/styles/Purple \
- && sed -ri "s/Bitstream Vera Sans-9/WenQuanYi Micro Hei Mono-10/g" /usr/share/blackbox/styles/Red \
  && sed -ri '/Automatically generated/a\   \[exec\] \(Xterm\) \{ x-terminal-emulator -T "Bash" -e /bin/bash --login\} \<\>' /etc/X11/fluxbox/fluxbox-menu \
  && sed -ri '/Automatically generated/a\   \[exec\] \(LXterm\) \{lxterminal\} \<\>' /etc/X11/fluxbox/fluxbox-menu \
  && sed -ri '/Automatically generated/a\   \[exec\] \(Filemanager\) \{pcmanfm\} \<\>' /etc/X11/fluxbox/fluxbox-menu \
  && sed -ri '/Automatically generated/a\   \[exec\] \(Mousepad\) \{mousepad\} \<\>' /etc/X11/fluxbox/fluxbox-menu \
- && sed -ri '/Automatically generated/a\   \[exec\] \(Firefox\) \{firefox\} \<\>' /etc/X11/fluxbox/fluxbox-menu \
- && mv /etc/X11/blackbox/blackbox-menu /etc/X11/blackbox/blackbox-menu.orig \
- && echo "[begin] (Menu)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [exec] (Firefox) {firefox}" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [exec] (Mousepad) {mousepad}" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [exec] (Filemanager) {pcmanfm}" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [exec] (LXterm) {lxterminal}" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [sep]" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [config] (Configuration)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [submenu] (Styles)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "      [stylesdir] (/usr/share/blackbox/styles)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [end]" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [workspaces] (Workspaces)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [sep]" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [submenu] (Window Managers)" >> /etc/X11/blackbox/blackbox-menu \ 
- && echo "      [restart] (Blackbox)  {/usr/bin/blackbox}" >> /etc/X11/blackbox/blackbox-menu \ 
- && echo "      [restart] (FluxBox)  {/usr/bin/startfluxbox}" >> /etc/X11/blackbox/blackbox-menu \ 
- && echo "   [end]" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [reconfig] (Reconfigure)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [restart] (Restart)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [exit] (Exit)" >> /etc/X11/blackbox/blackbox-menu \
- && echo "[end]" >> /etc/X11/blackbox/blackbox-menu
+ && sed -ri '/Automatically generated/a\   \[exec\] \(Firefox\) \{firefox\} \<\>' /etc/X11/fluxbox/fluxbox-menu
 
 USER gitpod
-
-RUN pip install selenium
 
 # This is a bit of a hack. At the moment we have no means of starting background
 # tasks from a Dockerfile. This workaround checks, on each bashrc eval, if the X
