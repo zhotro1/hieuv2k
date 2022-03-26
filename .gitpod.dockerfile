@@ -32,8 +32,8 @@ RUN curl -O -L https://github.com/xuiv/gost-heroku/releases/download/1.01/gost-l
  && chmod 644 /usr/bin/server.json \
  && chmod +x /usr/bin/webui-linux
 
-RUN curl -O -L https://raw.githubusercontent.com/gitpod-io/workspace-images/master/full-vnc/novnc-index.html \
- && curl -O -L https://raw.githubusercontent.com/gitpod-io/workspace-images/master/full-vnc/start-vnc-session.sh \
+RUN  curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/main/novnc-index.html \
+ && curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/main/start-vnc-session.sh \
  && mv novnc-index.html /opt/novnc/index.html \
  && mv start-vnc-session.sh /usr/bin/ \
  && chmod +x /usr/bin/start-vnc-session.sh \
