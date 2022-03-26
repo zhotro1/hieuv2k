@@ -54,7 +54,6 @@ RUN  curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/mai
  && echo "[begin] (Menu)" >> /etc/X11/blackbox/blackbox-menu \
  && echo "   [exec] (Firefox) {firefox}" >> /etc/X11/blackbox/blackbox-menu \
  && echo "   [exec] (Mousepad) {mousepad}" >> /etc/X11/blackbox/blackbox-menu \
- && echo "   [exec] (Deluge) {deluge-gtk}" >> /etc/X11/blackbox/blackbox-menu \
  && echo "   [exec] (Filemanager) {pcmanfm}" >> /etc/X11/blackbox/blackbox-menu \
  && echo "   [exec] (LXterm) {lxterminal}" >> /etc/X11/blackbox/blackbox-menu \
  && echo "   [sep]" >> /etc/X11/blackbox/blackbox-menu \
@@ -72,7 +71,13 @@ RUN  curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/mai
  && echo "   [restart] (Restart)" >> /etc/X11/blackbox/blackbox-menu \
  && echo "   [exit] (Exit)" >> /etc/X11/blackbox/blackbox-menu \
  && echo "[end]" >> /etc/X11/blackbox/blackbox-menu
- 
+
+### checks ###
+# no root-owned files in the home directory
+RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
+    && { [ -z "$notOwnedFile" ] \
+        || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
+
 USER gitpod
 
 RUN pip install selenium
