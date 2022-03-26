@@ -73,6 +73,16 @@ RUN  curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/mai
  && echo "   [exit] (Exit)" >> /etc/X11/blackbox/blackbox-menu \
  && echo "[end]" >> /etc/X11/blackbox/blackbox-menu
  
+### checks ###
+# no root-owned files in the home directory
+RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
+    && { [ -z "$notOwnedFile" ] \
+        || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
+
+USER gitpod
+
+RUN pip install selenium
+
 # This is a bit of a hack. At the moment we have no means of starting background
 # tasks from a Dockerfile. This workaround checks, on each bashrc eval, if the X
 # server is running on screen 0, and if not starts Xvfb, x11vnc and novnc.
@@ -90,13 +100,3 @@ RUN echo "export PORT=1080" >> ~/.bashrc \
  && echo "  nohup v2ray-linux -config /usr/bin/server.json >/dev/null 2>&1 &" >> ~/.bashrc \
  && echo "  [ ! -e /tmp/.X0-lock ] && (nohup /usr/bin/start-vnc-session.sh &> /tmp/display-\${DISPLAY}.log >/dev/null 2>&1 &)" >> ~/.bashrc \
  && echo "fi" >> ~/.bashrc
-
-### checks ###
-# no root-owned files in the home directory
-RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
-    && { [ -z "$notOwnedFile" ] \
-        || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
-
-USER gitpod
-
-RUN pip install selenium
