@@ -71,12 +71,6 @@ RUN  curl -O -L https://raw.githubusercontent.com/xuiv/python-railway-sample/mai
  && echo "   [exit] (Exit)" >> /etc/X11/blackbox/blackbox-menu \
  && echo "[end]" >> /etc/X11/blackbox/blackbox-menu
 
-### checks ###
-# no root-owned files in the home directory
-RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
-    && { [ -z "$notOwnedFile" ] \
-        || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
-
 USER gitpod
 
 RUN pip install selenium
