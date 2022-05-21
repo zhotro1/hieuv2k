@@ -6,7 +6,7 @@ USER root
 RUN add-apt-repository ppa:no1wantdthisname/ppa && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq language-pack-zh-hans-base xvfb x11vnc xterm megatools \
     fonts-droid-fallback fonts-wqy-microhei fluxbox firefox firefox-locale-zh-hans lxterminal \
-    pcmanfm mousepad dbus-x11 vim-nox aria2 \
+    pcmanfm mousepad dbus-x11 vim-nox aria2 build-essential cmake ninja-build \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' >/etc/timezone
